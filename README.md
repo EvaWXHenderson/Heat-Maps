@@ -1,14 +1,19 @@
 # Heat-Maps
 A visual model/heat map of the heat changes on mixing of 2 volumes of water of different temperatures.
 
-Final temperatures are found using the following logic/equations:
+Final temperatures are found using the following logic/equations (where Q is heat transfer in system and C<sub>p</sub> is the specific heat capacity under constant pressure):
 
 <p align="center">
-$Heat of system = Q = (mass)(ΔT)(C_{p})$
+$Q = (mass)(ΔT)(C_{p})$
+</p>
+<p align="center">
 $Q_{lost} = Q_{gain}$
-Thus solving for x gives final temperature:
-$(mass_{a})(T_{a} - x)(C_{p}) = (mass_{b})(T_{b} - x)(C_{p})$
+</p>
+<p align="center">
+$(mass_{a}*(T_{a} - T_{final})) (C_{p}) = (mass_{b}*(T_{b} - T_{final})) (C_{p})$
 </p>
 
-Sources:
-www.chemteam.info. (n.d.). The Final Temp after Mixing Two Amounts of Water. [online] Available at: https://www.chemteam.info/Thermochem/MixingWater.html.
+## Sources:    
+www.chemteam.info. (n.d.). The Final Temp after Mixing Two Amounts of Water. [online] Available at: https://www.chemteam.info/Thermochem/MixingWater.html.    
+
+Alviar-Agnew, M. and Agnew, H. (2016). 3.12: Energy and Heat Capacity Calculations. [online] Chemistry LibreTexts. Available at: https://chem.libretexts.org/Bookshelves/Introductory_Chemistry/Introductory_Chemistry_(LibreTexts)/03%3A_Matter_and_Energy/3.12%3A_Energy_and_Heat_Capacity_Calculations.
