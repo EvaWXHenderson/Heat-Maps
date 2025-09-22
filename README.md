@@ -10,8 +10,10 @@ $Q = (mass)(ΔT)(C_{p})$
 $Q_{lost} = Q_{gain}$
 </p>
 <p align="center">
-$(mass_{a})(T_{a} - T_{final})(C_{p}) = (mass_{b})(T_{b} - T_{final})(C_{p})$
+$(mass_{a}*(T_{a} - T_{final})) (C_{p}) = (mass_{b}*(T_{b} - T_{final})) (C_{p})$
 </p>
 
 ## Sources:    
-www.chemteam.info. (n.d.). The Final Temp after Mixing Two Amounts of Water. [online] Available at: https://www.chemteam.info/Thermochem/MixingWater.html.
+www.chemteam.info. (n.d.). The Final Temp after Mixing Two Amounts of Water. [online] Available at: https://www.chemteam.info/Thermochem/MixingWater.html.    
+
+Alviar-Agnew, M. and Agnew, H. (2016). 3.12: Energy and Heat Capacity Calculations. [online] Chemistry LibreTexts. Available at: https://chem.libretexts.org/Bookshelves/Introductory_Chemistry/Introductory_Chemistry_(LibreTexts)/03%3A_Matter_and_Energy/3.12%3A_Energy_and_Heat_Capacity_Calculations.
