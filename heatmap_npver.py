@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
+import matplotlib.colors as pltcol
 from matplotlib.animation import FuncAnimation
 import numpy as np
 
@@ -13,7 +13,27 @@ temp2 = 0
 
 heatmap = np.zeros((100,100))
 
-cmap = ListedColormap(['white', 'navy', 'mediumblue', 'yellowgreen', 'yellow','orange', 'red'])
+colours255 = [(255, 255, 255), 
+            (176,17,17), 
+            (180,69,31), 
+            (221,159,64), 
+            (231,216,125), 
+            (98,161,219)] #white, red, orange, light-orange, yellow, blue
+colours = []
+
+
+
+def rgb_conversion(rgbvalues, new_rgb):
+
+    for triple in rgbvalues:
+        new_values = []
+        for value in triple:
+            new_value = value/255
+            new_values.append(new_value)
+    
+        new_rgb.append(new_values)
+
+
 
 def get_user_float(message):
     try:
@@ -69,8 +89,8 @@ def set_start_info(info): #for testing
         mass2 = 60
         temp2 = 250
 
-        print("mass1: " + str(mass1) + " temp1: " + str(temp1))
-        print("mass1: " + str(mass2) + " temp1: " + str(temp2))
+        #print("mass1: " + str(mass1) + " temp1: " + str(temp1))
+        #print("mass1: " + str(mass2) + " temp1: " + str(temp2))
     
     if info == 'min/max':
         check_temp = [temp1, temp2]
@@ -81,25 +101,32 @@ def set_start_info(info): #for testing
 
         return max_t, min_t
 
-def set_info(temp_max, temp_min):
+def set_info(temp_max, temp_min, cmap = colours255):
     global temp_ranges
 
-    range = temp_max - temp_min
-    interval = range/6
-    temp_ranges = [[temp_min, temp_min + interval], 
-                   [temp_min + interval + 1, temp_min + 2*interval], 
-                   [temp_min + 2*interval + 1, temp_min + 3*interval], 
-                   [temp_min + 3*interval + 1, temp_min + 4*interval], 
-                   [temp_min + 4*interval, + 1,temp_min + 5*interval], 
-                   [temp_min + 5*interval + 1, temp_min + 6*interval]]
+    temp_ranges = []
 
-def set_colour(temp):
-    global temp_ranges
+    total_range = temp_max - temp_min
+    interval = total_range/len(cmap)
+
+    for x in range(len(cmap)):
+        range_0 = temp_min + interval*x
+        range_1 = temp_min + interval*x+1
+        temp_ranges.append([range_0, range_1])
+
+    temp_ranges[len(temp_ranges)-1][1] = temp_max
     
+    print("length: " + str(len(temp_ranges)) + " \n list: " + str(temp_ranges))
+
+def set_colour(temp, cmap = colours255):
+    global temp_ranges
+    #print('temperature: ' + str(temp))
+
     for x in range(len(temp_ranges)):
+        #print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
         if temp in range(int(temp_ranges[x][0]), int(temp_ranges[x][1])+1):
             colour = x+2
-            #print(str(temp) + " " + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)) + " " + str(colour))
+            #print("colour: " + str(colour) + "\n")
     
     return colour
 
@@ -131,8 +158,8 @@ def set_heatmap(size = gridsize, tempgrid = heatmap):
         for y in range(size):
             tempgrid[x,y] = temp2
 
-    check_array()
-    print(heatmap)
+    #check_array()
+    #print(heatmap)
 
 
 
@@ -152,6 +179,7 @@ def initialise_grid(size = gridsize, tempgrid = heatmap):
 
     for x in range(size):
         for y in range(size):
+            #print('temp needed: ' + str(tempgrid[x,y]))
             tile_colour = set_colour(tempgrid[x,y])
             grid[y][x] = tile_colour
     
@@ -181,15 +209,16 @@ def run(x):
     pass
 
 
+rgb_conversion(colours255, colours)
+mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
 
 set_start_info(info = 'set')
 set_start_info(info = 'min/max')
-print(heatmap)
 set_heatmap()
 
 
 
 fig, ax = plt.subplots(figsize = (5,5))
-image = ax.imshow(initialise_grid(), origin = 'upper', cmap=cmap)
+image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
 ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
 plt.show()
