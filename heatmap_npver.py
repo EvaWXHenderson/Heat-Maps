@@ -78,7 +78,6 @@ def check_array(array = heatmap, v1=temp1, v2=temp2):
     print('total should add to 10,000: ' + str(v1count+v2count))
 
 
-
 def set_start_info(info): #for testing
     global mass1, mass2, temp1, temp2, max_t, min_t
 
@@ -104,29 +103,22 @@ def set_start_info(info): #for testing
 def set_info(temp_max, temp_min, cmap = colours255):
     global temp_ranges
 
-    temp_ranges = []
-
     total_range = temp_max - temp_min
-    interval = total_range/len(cmap)
-
-    for x in range(len(cmap)):
-        range_0 = temp_min + interval*x
-        range_1 = temp_min + interval*x+1
-        temp_ranges.append([range_0, range_1])
-
-    temp_ranges[len(temp_ranges)-1][1] = temp_max
+    interval = total_range/(len(cmap)-1)
     
-    print("length: " + str(len(temp_ranges)) + " \n list: " + str(temp_ranges))
+    temp_ranges = [[temp_min, temp_min+interval],[temp_min+interval+1, temp_min+2*interval],[temp_min+2*interval+1, temp_min+3*interval], [temp_min+3*interval+1, temp_min+4*interval], [temp_min+4*interval+1, temp_max]]
+    
+    #print("length: " + str(len(temp_ranges)) + " \n list: " + str(temp_ranges))
 
 def set_colour(temp, cmap = colours255):
     global temp_ranges
-    #print('temperature: ' + str(temp))
+    print('temperature: ' + str(temp))
 
     for x in range(len(temp_ranges)):
-        #print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
+        print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
         if temp in range(int(temp_ranges[x][0]), int(temp_ranges[x][1])+1):
             colour = x+2
-            #print("colour: " + str(colour) + "\n")
+            print("colour: " + str(colour) + "\n")
     
     return colour
 
@@ -163,12 +155,43 @@ def set_heatmap(size = gridsize, tempgrid = heatmap):
 
 
 
-def temp_change():
-    global mass1, mass2, temp1, temp2
+def temp_change(temps, array = heatmap): #tempa has to be the tile changing
+    total = 0
 
-    X = ((mass2*temp2) - (mass1*temp1))/(mass2-mass1)
+    for x in temps:
+        total += x
+    
+    average = total/len(temps)
+    
+    return average #returns a temperature - asked for in Kelvin, mass in kg
 
-    return X #returns a temperature - asked for in Kelvin, mass in kg
+def update_temps(array = heatmap, gridsize = 100):
+    done = False
+
+    for x in range(gridsize-1):
+        for y in range(gridsize-1):
+            #tile = array[x,y]
+            if x<99 and y<99:
+                surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
+            
+            elif x == 0:
+                surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
+            elif y == 0:
+                surroundings = [array[x+1,y], array[x-1,y], array[x,y], array[x,y+1]]
+            elif x == 0 and y == 0:
+                surroundings = [array[x+1,y], array[x,y], array[x,y], array[x,y+1]]
+            
+            elif x == 100:
+                surroundings = [array[x,y], array[x-1,y], array[x,y-1], array[x,y+1]]
+            elif y == 100:
+                surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y]]
+            elif x==100 and y==100:
+                surroundings = [array[x,y], array[x-1,y], array[x,y-1], array[x,y]]
+
+                 #above, below, left, right
+            array[x,y] = temp_change(temps = surroundings) 
+            print(array[x,y])
+            
 
 
 
@@ -202,11 +225,14 @@ def grid_update(size = gridsize, tempgrid = heatmap):
     
     return grid
 
-    #update np array and Z array
-    #if temp in first range (lowest temp), colour is cooler (blue/indigo) - if temp is last temp (highest temp), colour is warmer (red/orange)
-
 def run(x):
-    pass
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    update_temps()
+
+    grid = grid_update()
+    image.set_data(grid)
 
 
 rgb_conversion(colours255, colours)
