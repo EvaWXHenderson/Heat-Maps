@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as pltcol
-from matplotlib.animation import FuncAnimation
 import random as rand
 
 colours1 = []
+grid = []
 
 #colours to go in order: white, warmest - coolest
 Colourmaps_names = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
@@ -38,8 +38,9 @@ def rgb_conversion(rgbvalues, new_rgb):
     
         new_rgb.append(new_values)
 def set_colours(clist = colours1):
-    colours = pltcol.LinearSegmentedColormap.from_list("", clist, N=len(clist))
+    colours = pltcol.LinearSegmentedColormap.from_list("", clist, N=len(clist)) 
     return colours
+
 
 
 gridsize = get_gridsize()
@@ -51,11 +52,17 @@ colours = set_colours()
 def set_grid(size = gridsize, cmap = colours_255):
     grid = [[0 for x in range(size)] for x in range(size)] 
 
+    def reset_colour():
+        colour = rand.randint(1, len(cmap))
+        #print(colour)
+        grid[y][x] = colour
+
     for x in range(size):
         for y in range(size):
-            colour = rand.randint(2, len(cmap))
-            grid[y][x] = colour
-
+            reset_colour()
+    
+    grid[0][0] = 0
+        
     ax.set_xticks([])
     ax.set_yticks([])
 
