@@ -117,7 +117,7 @@ def set_colour(temp, cmap = colours255):
     for x in range(len(temp_ranges)):
         print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
         if temp in range(int(temp_ranges[x][0]), int(temp_ranges[x][1])+1):
-            colour = x+2
+            colour = x+1
             print("colour: " + str(colour) + "\n")
     
     return colour
@@ -189,8 +189,7 @@ def update_temps(array = heatmap, gridsize = 100):
                 surroundings = [array[x,y], array[x-1,y], array[x,y-1], array[x,y]]
 
                  #above, below, left, right
-            array[x,y] = temp_change(temps = surroundings) 
-            print(array[x,y])
+            array[x,y] = temp_change(temps = surroundings)
             
 
 
@@ -206,7 +205,7 @@ def initialise_grid(size = gridsize, tempgrid = heatmap):
             tile_colour = set_colour(tempgrid[x,y])
             grid[y][x] = tile_colour
     
-    for x in range(1, len(temp_ranges)+1):
+    for x in range(0, len(temp_ranges)+1):
         grid[0][x] = x
 
     ax.set_xticks([])
