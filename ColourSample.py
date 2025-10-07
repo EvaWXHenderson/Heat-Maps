@@ -41,8 +41,22 @@ def set_colours(clist = colours1):
     colours = pltcol.LinearSegmentedColormap.from_list("", clist, N=len(clist)) 
     return colours
 
+def input_task():
+    task = input('Would you like to test another palette (A) or go on to heatmap generator (B)?')
+    if task == 'A' or task == 'a':
+        task_chosen = ''
+    elif task == 'B' or task == 'b':
+       task_chosen = ''
+    else:
+        input_task()
 
+    return task_chosen
+def output_task(task = input_task()):
+    pass
+    """if task = test again ---> call function to run colour test again
+        if task = move on ---> call heat map file """
 
+#put below into run function:
 gridsize = get_gridsize()
 colours_255 = get_colours()
 rgb_conversion(rgbvalues=colours_255, new_rgb=colours1)
