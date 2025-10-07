@@ -107,7 +107,6 @@ def set_info(temp_max, temp_min, cmap = colours255):
     interval = total_range/(len(cmap)-1)
     
     temp_ranges = [[temp_min, temp_min+interval],[temp_min+interval+1, temp_min+2*interval],[temp_min+2*interval+1, temp_min+3*interval], [temp_min+3*interval+1, temp_min+4*interval], [temp_min+4*interval+1, temp_max]]
-    
     #print("length: " + str(len(temp_ranges)) + " \n list: " + str(temp_ranges))
 
 def set_colour(temp, cmap = colours255):
@@ -115,8 +114,9 @@ def set_colour(temp, cmap = colours255):
     print('temperature: ' + str(temp))
 
     for x in range(len(temp_ranges)):
-        print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
-        if temp in range(int(temp_ranges[x][0]), int(temp_ranges[x][1])+1):
+        #print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
+        if temp >= temp_ranges[x][0] and temp <= temp_ranges[x][1] + 1:
+            print('in range: ' + str(temp_ranges[x]))
             colour = x+1
             print("colour: " + str(colour) + "\n")
     
@@ -247,3 +247,5 @@ fig, ax = plt.subplots(figsize = (5,5))
 image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
 ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
 plt.show()
+
+print('ranges: ' + str(temp_ranges))
