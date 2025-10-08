@@ -171,24 +171,8 @@ def update_temps(array = heatmap, gridsize = 100):
     for x in range(gridsize-1):
         for y in range(gridsize-1):
             #tile = array[x,y]
-            if x<99 and y<99:
-                surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
-            
-            elif x == 0:
-                surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
-            elif y == 0:
-                surroundings = [array[x+1,y], array[x-1,y], array[x,y], array[x,y+1]]
-            elif x == 0 and y == 0:
-                surroundings = [array[x+1,y], array[x,y], array[x,y], array[x,y+1]]
-            
-            elif x == 100:
-                surroundings = [array[x,y], array[x-1,y], array[x,y-1], array[x,y+1]]
-            elif y == 100:
-                surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y]]
-            elif x==100 and y==100:
-                surroundings = [array[x,y], array[x-1,y], array[x,y-1], array[x,y]]
-
-                 #above, below, left, right
+            surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
+            #above, below, left, right
             array[x,y] = temp_change(temps = surroundings)
             
 
