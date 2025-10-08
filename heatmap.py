@@ -74,6 +74,8 @@ def get_temp_click(event, index = heatmap):
                 print('temp at ' + str((x, y)) + ": " + str(temp))
                 return
 
+
+
 def check_array(array = heatmap, v1=temp1, v2=temp2):
     v1count = 0
     v2count = 0
@@ -87,6 +89,28 @@ def check_array(array = heatmap, v1=temp1, v2=temp2):
     print('tiles temp 1: ' + str(v1count))
     print('tiles temp 2: ' + str(v2count))
     print('total should add to 10,000: ' + str(v1count+v2count))
+
+
+
+def initialise_grid(size = gridsize, tempgrid = heatmap):
+    global temp1, temp2
+
+    grid = [[0 for x in range(size)] for x in range(size)] #geneate 100x100 pixel display
+
+    for x in range(size):
+        for y in range(size):
+            #print('temp needed: ' + str(tempgrid[x,y]))
+            tile_colour = set_colour(tempgrid[x,y])
+            grid[y][x] = tile_colour
+    
+    for x in range(0, len(temp_ranges)+1):
+        grid[0][x] = x
+
+    ax.set_xticks([])
+    ax.set_yticks([])
+        
+    return grid
+
 
 
 def set_start_info(info): #for testing
@@ -184,34 +208,13 @@ def update_temps(array = heatmap, gridsize = 100):
             #tile = array[x,y]
             if x<=100 and y<=100:
                 surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
-            elif x == 0:
+            if x == 0:
+                print("x is 0 now")
                 surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
             #above, below, left, right
             array[x,y] = temp_change(temps = surroundings)
-            
 
-
-
-def initialise_grid(size = gridsize, tempgrid = heatmap):
-    global temp1, temp2
-
-    grid = [[0 for x in range(size)] for x in range(size)] #geneate 100x100 pixel display
-
-    for x in range(size):
-        for y in range(size):
-            #print('temp needed: ' + str(tempgrid[x,y]))
-            tile_colour = set_colour(tempgrid[x,y])
-            grid[y][x] = tile_colour
-    
-    for x in range(0, len(temp_ranges)+1):
-        grid[0][x] = x
-
-    ax.set_xticks([])
-    ax.set_yticks([])
-        
-    return grid
-
-def grid_update(size = gridsize, tempgrid = heatmap):
+def update_grid(size = gridsize, tempgrid = heatmap):
     grid = [[0 for x in range(size+1)] for x in range(size+1)]
     
     for x in range(100):
@@ -222,13 +225,15 @@ def grid_update(size = gridsize, tempgrid = heatmap):
     
     return grid
 
+
+
 def run(x):
     ax.set_xticks([])
     ax.set_yticks([])
 
     update_temps()
 
-    grid = grid_update()
+    grid = update_grid()
     image.set_data(grid)
 
 
@@ -249,3 +254,5 @@ ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
 plt.show()
 
 #print('ranges: ' + str(temp_ranges))
+print(np.nanmax(heatmap))
+print(np.nanmin(heatmap))
