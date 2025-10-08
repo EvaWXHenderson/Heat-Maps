@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as pltcol
 from matplotlib.animation import FuncAnimation
+
 import numpy as np
+
 
 gridsize = 100
 
@@ -61,7 +63,16 @@ def get_info(info):
 
         return max_t, min_t
 
-
+def get_temp_click(event, index = heatmap):
+    global ix, iy
+    
+    iy, ix= round(event.xdata), round(event.ydata)
+    for x in range(100):
+        for y in range(100):
+            if x == ix and y == iy:
+                temp = index[x,y]
+                print('temp at ' + str((x, y)) + ": " + str(temp))
+                return
 
 def check_array(array = heatmap, v1=temp1, v2=temp2):
     v1count = 0
@@ -111,14 +122,14 @@ def set_info(temp_max, temp_min, cmap = colours255):
 
 def set_colour(temp, cmap = colours255):
     global temp_ranges
-    print('temperature: ' + str(temp))
+    #print('temperature: ' + str(temp))
 
     for x in range(len(temp_ranges)):
         #print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
         if temp >= temp_ranges[x][0] and temp <= temp_ranges[x][1] + 1:
-            print('in range: ' + str(temp_ranges[x]))
+            #print('in range: ' + str(temp_ranges[x]))
             colour = x+1
-            print("colour: " + str(colour) + "\n")
+            #print("colour: " + str(colour) + "\n")
     
     return colour
 
@@ -171,7 +182,10 @@ def update_temps(array = heatmap, gridsize = 100):
     for x in range(gridsize-1):
         for y in range(gridsize-1):
             #tile = array[x,y]
-            surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
+            if x<=100 and y<=100:
+                surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
+            elif x == 0:
+                surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
             #above, below, left, right
             array[x,y] = temp_change(temps = surroundings)
             
@@ -228,8 +242,10 @@ set_heatmap()
 
 
 fig, ax = plt.subplots(figsize = (5,5))
+fig.canvas.mpl_connect('button_press_event', get_temp_click)
+
 image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
 ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
 plt.show()
 
-print('ranges: ' + str(temp_ranges))
+#print('ranges: ' + str(temp_ranges))
