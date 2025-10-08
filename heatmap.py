@@ -89,6 +89,9 @@ def check_array(array = heatmap, v1=temp1, v2=temp2):
     print('tiles temp 1: ' + str(v1count))
     print('tiles temp 2: ' + str(v2count))
     print('total should add to 10,000: ' + str(v1count+v2count))
+def check_maxmin(array): #for np array
+    print(np.nanmax(array))
+    print(np.nanmin(array))
 
 
 
@@ -209,7 +212,6 @@ def update_temps(array = heatmap, gridsize = 100):
             if x<=100 and y<=100:
                 surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
             if x == 0:
-                print("x is 0 now")
                 surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
             #above, below, left, right
             array[x,y] = temp_change(temps = surroundings)
@@ -253,6 +255,4 @@ image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
 ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
 plt.show()
 
-#print('ranges: ' + str(temp_ranges))
-print(np.nanmax(heatmap))
-print(np.nanmin(heatmap))
+check_maxmin(heatmap)
