@@ -5,7 +5,7 @@ Temperature changes occur based on taking new average temperatures of points abo
 
 To generate a desired heat map simulation: resolution/dimensions and colour scheme (see ColourSample.py) can be changed/chosen.
 
-![](https://github.com/EvaWXHenderson/Heat-Maps/blob/main/Screen%20Recording%202025-10-08%20at%2020.52.35.gif)
+![](https://github.com/EvaWXHenderson/Heat-Maps/blob/main/media/Screen%20Recording%202025-10-08%20at%2020.52.35.gif)
 
 <!--Final temperatures are found using the following logic/equations (where Q is heat transfer in system and C<sub>p</sub> is the specific heat capacity under constant pressure):
 
