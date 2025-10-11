@@ -25,7 +25,11 @@ looking into Navier-Stokes equation to try make the movement of heat/diffusion l
 ## Colour Sampler
 ColourSample.py can be used to test colour themes/schemes for the heat map, some set colour schemes to choose from:
 
-'insert samples'
+<p align="center">
+  <img src="https://github.com/EvaWXHenderson/Heat-Maps/blob/main/media/cmapA.png" width="325" />
+  <img src="https://github.com/EvaWXHenderson/Heat-Maps/blob/main/media/cmapD.png" width="325" /> 
+  <img src="https://github.com/EvaWXHenderson/Heat-Maps/blob/main/media/cmapH.png" width="325" /> 
+</p>
 
 (sample maps formed based Perlin Noise equations/packages)
 
