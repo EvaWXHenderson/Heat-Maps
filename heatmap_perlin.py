@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as pltcol
 from matplotlib.animation import FuncAnimation
 
+import pythonperlin as pp
+
 import numpy as np
 
 
@@ -13,14 +15,18 @@ mass2 = 0
 temp1 = 0
 temp2 = 0
 
-heatmap = np.zeros((100,100))
+perlin = np.abs(pp.perlin((4,4), dens=25))
+perlin[perlin > 0.5] = 0.5
+#print(np.min(perlin),np.max(perlin))
+
+heatmap = 250 + 50*(perlin*2)
 
 colours255 = [(255, 255, 255),
               (98,161,219),
               (231,216,125),
               (221,159,64), 
               (180,69,31), 
-             (176,17,17)] #white, red, orange, light-orange, yellow, blue
+              (176,17,17)] #white,blue,yellow,light-orange,orange,red
 colours = []
 
 
@@ -63,14 +69,14 @@ def get_info(info):
 
         return max_t, min_t
 
-def get_temp_click(event):
-    global ix, iy, gridsize,heatmap
+def get_temp_click(event, index = heatmap):
+    global ix, iy
     
     iy, ix= round(event.xdata), round(event.ydata)
-    for x in range(gridsize):
-        for y in range(gridsize):
+    for x in range(100):
+        for y in range(100):
             if x == ix and y == iy:
-                temp = heatmap[y,x]
+                temp = index[y,x]
                 print('temp at ' + str((x, y)) + ": " + str(temp))
                 return
 
@@ -119,6 +125,7 @@ def check_proportions(array):
     print('270-280: ' + str(third))
     print('280-290: ' + str(fourth))
     print('290-300: ' + str(fifth))
+
 
 
 def initialise_grid(size = gridsize, tempgrid = heatmap):
@@ -176,7 +183,7 @@ def set_info(temp_max, temp_min, cmap = colours255):
 def set_colour(temp, cmap = colours255):
     global temp_ranges
     #print('temperature: ' + str(temp))
-
+    colour = 0
     for x in range(len(temp_ranges)):
         #print('ranges: ' + str((int(temp_ranges[x][0]), int(temp_ranges[x][1])+1)))
         if temp >= temp_ranges[x][0] and temp <= temp_ranges[x][1] + 1:
@@ -197,25 +204,6 @@ def set_proportions():
     #print(tiles1, tiles2)
 
     return tiles1, tiles2
-
-def set_heatmap(size = gridsize, tempgrid = heatmap):
-    global temp1, temp2
-
-    tiles1, tiles2 = set_proportions()
-    set1 = int(tiles1)
-
-    colour1 = set_colour(temp1)
-    colour2 = set_colour(temp2)
-
-    for x in range(0, set1):
-        for y in range(size):
-            tempgrid[x,y] = temp1
-    for x in range(set1, size):
-        for y in range(size):
-            tempgrid[x,y] = temp2
-
-    #check_array()
-    #print(heatmap)
 
 
 
@@ -265,6 +253,7 @@ def run(x):
     image.set_data(grid)
 
 
+
 rgb_conversion(colours255, colours)
 mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
 
@@ -272,8 +261,8 @@ mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours)
 
 set_start_info(info = 'set')
 set_start_info(info = 'min/max')
-set_heatmap()
-check_proportions(heatmap)
+check_proportions(array = heatmap)
+#set_heatmap()
 
 
 
