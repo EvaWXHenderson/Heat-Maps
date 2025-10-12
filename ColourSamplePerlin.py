@@ -1,5 +1,5 @@
 import pythonperlin as pp
-
+import numpy as np
 import matplotlib.colors as pltcol
 import matplotlib.pyplot as plt
 
@@ -56,7 +56,7 @@ def output_task(input):
     if input == 'A':
         get_colours()
     elif input == 'B':
-
+        pass
     
 
 colours_255 = get_colours()
@@ -67,7 +67,7 @@ colours = set_colours()
 dens = 65
 shape = (8,8)
 x = pp.perlin(shape, dens=dens)
-
+print(np.min(x),np.max(x))
 #ax.set_xticks([])
 #ax.set_yticks([])
 
