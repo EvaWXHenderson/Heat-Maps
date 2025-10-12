@@ -93,6 +93,33 @@ def check_maxmin(array): #for np array
     print(np.nanmax(array))
     print(np.nanmin(array))
 
+def check_proportions(array):
+    global gridsize, temp_ranges
+
+    first = 0
+    second = 0
+    third = 0
+    fourth = 0
+    fifth = 0
+
+    for x in range(gridsize):
+        for y in range(gridsize):
+            if array[x,y] >= temp_ranges[0][0] and array[x,y] <= temp_ranges[0][1] + 1:
+                first += 1
+            elif array[x,y] >= temp_ranges[1][0] and array[x,y] <= temp_ranges[1][1] + 1:
+                second += 1
+            elif array[x,y] >= temp_ranges[2][0] and array[x,y] <= temp_ranges[2][1] + 1:
+                third += 1
+            elif array[x,y] >= temp_ranges[3][0] and array[x,y] <= temp_ranges[3][1] + 1:
+                fourth += 1
+            elif array[x,y] >= temp_ranges[4][0] and array[x,y] <= temp_ranges[4][1] + 1:
+                fifth += 1
+
+    print('250-260: ' + str(first))
+    print('260-270: ' + str(second))
+    print('270-280: ' + str(third))
+    print('280-290: ' + str(fourth))
+    print('290-300: ' + str(fifth))
 
 
 def initialise_grid(size = gridsize, tempgrid = heatmap):
@@ -238,21 +265,22 @@ def run(x):
     grid = update_grid()
     image.set_data(grid)
 
-def heatmap_run():
-    rgb_conversion(colours255, colours)
-    mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
-
-    set_start_info(info = 'set')
-    set_start_info(info = 'min/max')
-    set_heatmap()
 
 
+rgb_conversion(colours255, colours)
+mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
 
-    fig, ax = plt.subplots(figsize = (5,5))
-    fig.canvas.mpl_connect('button_press_event', get_temp_click)
+set_start_info(info = 'set')
+set_start_info(info = 'min/max')
+set_heatmap()
+check_proportions(heatmap)
 
-    image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
-    ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
-    plt.show()
 
-    check_maxmin(heatmap)
+fig, ax = plt.subplots(figsize = (5,5))
+fig.canvas.mpl_connect('button_press_event', get_temp_click)
+
+image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
+ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
+plt.show()
+
+check_maxmin(heatmap)
