@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as pltcol
+
+import pythonperlin as pp
+
 import random as rand
 
 colours1 = []
@@ -51,7 +54,7 @@ def input_task():
         input_task()
 
     return task_chosen
-def output_task(task = input_task()):
+def output_task():
     pass
     """if task = test again ---> call function to run colour test again
         if task = move on ---> call heat map file """

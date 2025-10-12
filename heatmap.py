@@ -238,21 +238,21 @@ def run(x):
     grid = update_grid()
     image.set_data(grid)
 
+def heatmap_run():
+    rgb_conversion(colours255, colours)
+    mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
 
-rgb_conversion(colours255, colours)
-mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours))
-
-set_start_info(info = 'set')
-set_start_info(info = 'min/max')
-set_heatmap()
+    set_start_info(info = 'set')
+    set_start_info(info = 'min/max')
+    set_heatmap()
 
 
 
-fig, ax = plt.subplots(figsize = (5,5))
-fig.canvas.mpl_connect('button_press_event', get_temp_click)
+    fig, ax = plt.subplots(figsize = (5,5))
+    fig.canvas.mpl_connect('button_press_event', get_temp_click)
 
-image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
-ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
-plt.show()
+    image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
+    ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
+    plt.show()
 
-check_maxmin(heatmap)
+    check_maxmin(heatmap)

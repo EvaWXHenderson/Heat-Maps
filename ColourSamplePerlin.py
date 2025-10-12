@@ -41,6 +41,24 @@ def rgb_conversion(rgbvalues, new_rgb):
         new_rgb.append(new_values)
 
 
+def input_task():
+    task = input('Would you like to test another palette (A) or go on to heatmap generator (B)?')
+    if task == 'A' or task == 'a':
+        task_chosen = ''
+    elif task == 'B' or task == 'b':
+       task_chosen = ''
+    else:
+        input_task()
+
+    return task_chosen
+def output_task(input):
+    pass
+    if input == 'A':
+        get_colours()
+    elif input == 'B':
+
+    
+
 colours_255 = get_colours()
 rgb_conversion(rgbvalues=colours_255, new_rgb=colours1)
 colours = set_colours()
@@ -59,3 +77,5 @@ ax.set_xticks([])
 ax.set_yticks([])
 
 plt.show()
+
+output_task(input = input_task())
