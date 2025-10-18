@@ -6,8 +6,11 @@ def get_action():
                     'B: Generate heatmap')
     
     if action == 'A' or action == 'a':
-        cp.run()
+        coloursampler = cp.ColourSampler()
+        coloursampler.run()
 
+        get_action()
+        
     if action == 'B' or action == 'b':
         heatmap = ht.Heatmap()
         heatmap.run()
