@@ -41,42 +41,21 @@ def rgb_conversion(rgbvalues, new_rgb):
     
         new_rgb.append(new_values)
 
+def run():
+    colours_255 = get_colours()
+    rgb_conversion(rgbvalues=colours_255, new_rgb=colours1)
+    colours = set_colours()
 
-def input_task():
-    task = input('Would you like to test another palette (A) or go on to heatmap generator (B)?')
-    if task == 'A' or task == 'a':
-        task_chosen = ''
-    elif task == 'B' or task == 'b':
-       task_chosen = ''
-    else:
-        input_task()
+    dens = 65
+    shape = (8,8)
+    x = pp.perlin(shape, dens=dens)
+    print(np.min(x),np.max(x))
+    #ax.set_xticks([])
+    #ax.set_yticks([])
 
-    return task_chosen
-def output_task(input):
-    pass
-    if input == 'A':
-        get_colours()
-    elif input == 'B':
-        pass
-    
+    fig, ax = plt.subplots(1,1)
+    ax.imshow(x, cmap = colours)
+    ax.set_xticks([])
+    ax.set_yticks([])
 
-colours_255 = get_colours()
-rgb_conversion(rgbvalues=colours_255, new_rgb=colours1)
-colours = set_colours()
-
-
-dens = 65
-shape = (8,8)
-x = pp.perlin(shape, dens=dens)
-print(np.min(x),np.max(x))
-#ax.set_xticks([])
-#ax.set_yticks([])
-
-fig, ax = plt.subplots(1,1)
-ax.imshow(x, cmap = colours)
-ax.set_xticks([])
-ax.set_yticks([])
-
-plt.show()
-
-output_task(input = input_task())
+    plt.show()
