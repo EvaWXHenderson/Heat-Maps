@@ -1,4 +1,4 @@
-import heatmap_perlin as ht
+import heatmap_class as ht
 import ColourSamplePerlin as cp 
 
 def get_action():
@@ -9,7 +9,8 @@ def get_action():
         cp.run()
 
     if action == 'B' or action == 'b':
-        ht.run()
+        heatmap = ht.Heatmap()
+        heatmap.run()
     else:
         get_action()
 

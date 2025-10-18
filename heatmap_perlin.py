@@ -9,9 +9,6 @@ import numpy as np
 
 gridsize = 100
 
-mass1 = 0
-mass2 = 0
-
 temp1 = 0
 temp2 = 0
 
@@ -19,7 +16,7 @@ perlin = np.abs(pp.perlin((4,4), dens=25))
 perlin[perlin > 0.5] = 0.5
 #print(np.min(perlin),np.max(perlin))
 
-heatmap = 250 + 50*(perlin*2)
+heatmap = 200 + 200*(perlin*2)
 
 colours255 = [(255, 255, 255),
               (98,161,219),
@@ -49,16 +46,13 @@ def get_user_float(message):
     except ValueError:
         return get_user_float()
     return output
-
 def get_info(info):
-    global mass1, mass2, temp1, temp2, max_t, min_t
+    global temp1, temp2, max_t, min_t
 
-    if info == 'set':
-        mass1 = get_user_float("mass of solution 1 (kg): ")
-        temp1 = get_user_float("temperature of solution 1 (K): ")
+    if info == 'temp':
+        temp1 = get_user_float("Input temperature of lowest point: ")
 
-        mass2 = get_user_float("mass of solution 2(kg): ")
-        temp2 = get_user_float("temperature of solution 2 (K): ")
+        temp2 = get_user_float("Input temperature of highest point: ")
     
     if info == 'min/max':
         check_temp = [temp1, temp2]
@@ -150,14 +144,11 @@ def initialise_grid(size = gridsize, tempgrid = heatmap):
 
 
 def set_start_info(info): #for testing
-    global mass1, mass2, temp1, temp2, max_t, min_t
+    global temp1, temp2, max_t, min_t
 
     if info == 'set':
-        mass1 = 100
-        temp1 = 300
-
-        mass2 = 60
-        temp2 = 250
+        temp1 = 400
+        temp2 = 200
 
         #print("mass1: " + str(mass1) + " temp1: " + str(temp1))
         #print("mass1: " + str(mass2) + " temp1: " + str(temp2))
@@ -193,18 +184,6 @@ def set_colour(temp, cmap = colours255):
     
     return colour
 
-def set_proportions():
-    global mass1, mass2, temp1, temp2
-
-    portion1 = mass1/(mass1+mass2) #should get a decimal proportion
-
-    tiles1 = portion1*100
-    tiles2 = 100 - tiles1
-
-    #print(tiles1, tiles2)
-
-    return tiles1, tiles2
-
 
 
 def temp_change(temps, array = heatmap): #tempa has to be the tile changing
@@ -217,13 +196,14 @@ def temp_change(temps, array = heatmap): #tempa has to be the tile changing
     
     return average #returns a temperature - asked for in Kelvin, mass in kg
 
-def update_temps(array = heatmap, gridsize = 100):
+def update_temps(array = heatmap):
+    global gridsize
     done = False
 
     for x in range(gridsize-1):
         for y in range(gridsize-1):
             #tile = array[x,y]
-            if x<=100 and y<=100:
+            if x<=gridsize and y<=gridsize:
                 surroundings = [array[x+1,y], array[x-1,y], array[x,y-1], array[x,y+1]]
             if x == 0:
                 surroundings = [array[x+1,y], array[x,y], array[x,y-1], array[x,y+1]]
@@ -243,7 +223,7 @@ def update_grid(size = gridsize, tempgrid = heatmap):
 
 
 
-def run(x):
+def screen_run(x):
     ax.set_xticks([])
     ax.set_yticks([])
 
@@ -259,7 +239,7 @@ mapcolour = pltcol.LinearSegmentedColormap.from_list("", colours, N=len(colours)
 
 
 
-set_start_info(info = 'set')
+get_info(info = 'temp')
 set_start_info(info = 'min/max')
 check_proportions(array = heatmap)
 #set_heatmap()
@@ -270,7 +250,5 @@ fig, ax = plt.subplots(figsize = (5,5))
 fig.canvas.mpl_connect('button_press_event', get_temp_click)
 
 image = ax.imshow(initialise_grid(), origin = 'upper', cmap=mapcolour)
-ani = FuncAnimation(fig, run, frames = 100, interval = 100, blit = False)
+ani = FuncAnimation(fig, screen_run, frames = 100, interval = 125, blit = False)
 plt.show()
-
-check_maxmin(heatmap)
